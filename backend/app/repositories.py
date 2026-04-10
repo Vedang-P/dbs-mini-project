@@ -208,6 +208,60 @@ def get_products(
         return list(cur.fetchall())
 
 
+def create_product(
+    conn: psycopg.Connection,
+    *,
+    category_id: int,
+    sku: str,
+    product_name: str,
+    description: str | None,
+    price: float,
+    stock_qty: int,
+    reorder_level: int,
+    is_active: bool,
+) -> dict:
+    normalized_sku = sku.strip().upper()
+    normalized_name = product_name.strip()
+    normalized_description = (description or "").strip() or None
+
+    if not normalized_sku:
+        raise ValueError("SKU is required.")
+    if not normalized_name:
+        raise ValueError("Product name is required.")
+
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            INSERT INTO products (
+                category_id,
+                sku,
+                product_name,
+                description,
+                price,
+                stock_qty,
+                reorder_level,
+                is_active
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING product_id, category_id, sku, product_name, description, price, stock_qty, reorder_level, is_active
+            """,
+            (
+                category_id,
+                normalized_sku,
+                normalized_name,
+                normalized_description,
+                price,
+                stock_qty,
+                reorder_level,
+                is_active,
+            ),
+        )
+        row = cur.fetchone()
+        if row is None:
+            raise ValueError("Unable to create product.")
+        return row
+
+
 def add_to_cart(
     conn: psycopg.Connection,
     *,

@@ -9,6 +9,7 @@ from .db import get_connection
 from .dependencies import get_admin_user, get_current_session, get_current_user
 from .repositories import (
     add_to_cart,
+    create_product,
     create_session,
     get_admin_audit,
     get_admin_low_stock,
@@ -31,6 +32,7 @@ from .repositories import (
 from .schemas import (
     AddToCartRequest,
     CancelOrderRequest,
+    CreateProductRequest,
     LegacyAddToCartRequest,
     LoginRequest,
     PlaceOrderRequest,
@@ -183,6 +185,34 @@ def list_products(
             max_price=max_price,
         )
         return {"count": len(products), "products": products}
+
+
+@app.post("/admin/products")
+def admin_create_product(
+    payload: CreateProductRequest,
+    _: dict[str, Any] = Depends(get_admin_user),
+) -> dict:
+    with get_connection() as conn:
+        try:
+            with conn.transaction():
+                product = create_product(
+                    conn,
+                    category_id=payload.category_id,
+                    sku=payload.sku,
+                    product_name=payload.product_name,
+                    description=payload.description,
+                    price=payload.price,
+                    stock_qty=payload.stock_qty,
+                    reorder_level=payload.reorder_level,
+                    is_active=payload.is_active,
+                )
+                return {"message": "Product created successfully", "product": product}
+        except psycopg.errors.UniqueViolation:
+            raise HTTPException(status_code=409, detail="SKU already exists.") from None
+        except psycopg.errors.ForeignKeyViolation:
+            raise HTTPException(status_code=400, detail="Invalid category selected.") from None
+        except (psycopg.Error, ValueError) as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 @app.post("/cart/items")

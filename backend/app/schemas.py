@@ -34,3 +34,14 @@ class LegacyAddToCartRequest(BaseModel):
 
 class UpdateCartItemRequest(BaseModel):
     quantity: int = Field(gt=0)
+
+
+class CreateProductRequest(BaseModel):
+    category_id: int = Field(gt=0)
+    sku: str = Field(min_length=3, max_length=60)
+    product_name: str = Field(min_length=2, max_length=160)
+    description: str | None = Field(default=None, max_length=2000)
+    price: float = Field(gt=0)
+    stock_qty: int = Field(ge=0)
+    reorder_level: int = Field(ge=0, default=5)
+    is_active: bool = True

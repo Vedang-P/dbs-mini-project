@@ -14,9 +14,9 @@
         <section class="section-head" data-reveal>
           <div>
             <h1 style="font-size:2.2rem">Admin Insights</h1>
-            <p class="muted">Live operational view for stock risk, sales trends, and audit records.</p>
+            <p class="muted">Live operational view for stock risk, sales trends, audit records, and catalog management.</p>
           </div>
-          <span class="pill">Read only</span>
+          <span class="pill">Admin tools</span>
         </section>
 
         <section id="adminStatus"></section>
@@ -27,6 +27,57 @@
         </section>
 
         <section class="metrics-grid" id="summaryCards" data-reveal></section>
+
+        <section data-reveal>
+          <article class="card panel">
+            <div class="section-head" style="margin-bottom:0">
+              <div>
+                <h2>Add New Product</h2>
+                <p class="muted">Create products directly from the admin dashboard.</p>
+              </div>
+            </div>
+            <form id="addProductForm" class="form-grid">
+              <div class="admin-form-grid">
+                <div class="form-field">
+                  <label for="newProductCategory">Category</label>
+                  <select id="newProductCategory" required></select>
+                </div>
+                <div class="form-field">
+                  <label for="newProductSku">SKU</label>
+                  <input id="newProductSku" placeholder="EX: ELEC-101" maxlength="60" required />
+                </div>
+                <div class="form-field">
+                  <label for="newProductName">Product Name</label>
+                  <input id="newProductName" placeholder="Enter product name" maxlength="160" required />
+                </div>
+                <div class="form-field">
+                  <label for="newProductPrice">Price</label>
+                  <input id="newProductPrice" type="number" min="0.01" step="0.01" placeholder="0.00" required />
+                </div>
+                <div class="form-field">
+                  <label for="newProductStock">Stock Quantity</label>
+                  <input id="newProductStock" type="number" min="0" step="1" value="0" required />
+                </div>
+                <div class="form-field">
+                  <label for="newProductReorder">Reorder Level</label>
+                  <input id="newProductReorder" type="number" min="0" step="1" value="5" required />
+                </div>
+                <div class="form-field span-2">
+                  <label for="newProductDescription">Description</label>
+                  <textarea id="newProductDescription" rows="3" placeholder="Product description"></textarea>
+                </div>
+                <label class="inline-check span-2">
+                  <input id="newProductActive" type="checkbox" checked />
+                  Product is active and visible in catalog
+                </label>
+              </div>
+              <div class="quick-links">
+                <button id="addProductSubmit" class="btn btn-primary" type="submit">Add Product</button>
+              </div>
+              <div id="adminProductStatus"></div>
+            </form>
+          </article>
+        </section>
 
         <section class="details-layout" data-reveal>
           <article class="card panel">
