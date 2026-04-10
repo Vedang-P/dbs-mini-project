@@ -1,0 +1,19 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NexBasket logo mark">
+  <defs>
+    <linearGradient id="nb-bg" x1="64" y1="40" x2="460" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5E84FF" />
+      <stop offset="1" stop-color="#2F5DFF" />
+    </linearGradient>
+    <linearGradient id="nb-accent" x1="110" y1="164" x2="394" y2="374" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DF0C8" />
+      <stop offset="1" stop-color="#35C58F" />
+    </linearGradient>
+  </defs>
+  <rect x="40" y="40" width="432" height="432" rx="126" fill="url(#nb-bg)" />
+  <path d="M152 220C152 162.562 198.562 116 256 116C313.438 116 360 162.562 360 220" stroke="#EAF1FF" stroke-width="24" stroke-linecap="round"/>
+  <path d="M120 222H392L363.841 358.704C359.594 379.318 341.447 394 320.4 394H191.6C170.553 394 152.406 379.318 148.159 358.704L120 222Z" fill="#F7FAFF"/>
+  <path d="M154 276H358" stroke="#7E93C6" stroke-width="16" stroke-linecap="round"/>
+  <path d="M170 330H342" stroke="#7E93C6" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="206" cy="305" r="20" fill="url(#nb-accent)"/>
+  <circle cx="306" cy="305" r="20" fill="url(#nb-accent)"/>
+</svg>

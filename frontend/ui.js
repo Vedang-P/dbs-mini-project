@@ -191,7 +191,7 @@ export function renderNavbar(activePage = "home") {
     <div class="navbar-shell">
       <div class="navbar-inner">
         <a href="index.html" class="brand" aria-label="${APP_NAME} home">
-          <span class="brand-badge">NB</span>
+          <img src="assets/brand/logo-mark.svg" class="brand-logo" alt="${APP_NAME} logo" />
           <span>${APP_NAME}</span>
         </a>
         <nav class="nav-links" aria-label="Main navigation">

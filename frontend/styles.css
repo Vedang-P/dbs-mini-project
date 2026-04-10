@@ -297,15 +297,17 @@ html[data-theme="dark"] .navbar-shell {
   letter-spacing: -0.02em;
 }
 
-.brand-badge {
+.brand-logo {
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(145deg, #4f79ff, #2f5dff);
-  color: #fff;
-  font-size: 0.95rem;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 6px 14px rgba(47, 93, 255, 0.24);
+}
+
+html[data-theme="dark"] .brand-logo {
+  box-shadow: 0 6px 14px rgba(16, 32, 64, 0.5);
 }
 
 .nav-links {
@@ -940,6 +942,10 @@ html[data-theme="dark"] .newsletter .btn {
   display: grid;
   gap: 20px;
   align-content: center;
+}
+
+.auth-brand .brand-logo {
+  border: 1px solid rgba(226, 236, 255, 0.45);
 }
 
 .auth-brand ul {

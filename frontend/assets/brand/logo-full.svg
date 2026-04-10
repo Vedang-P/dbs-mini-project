@@ -1,0 +1,21 @@
+<svg width="980" height="260" viewBox="0 0 980 260" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NexBasket logo">
+  <defs>
+    <linearGradient id="full-bg" x1="20" y1="14" x2="226" y2="240" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5E84FF" />
+      <stop offset="1" stop-color="#2F5DFF" />
+    </linearGradient>
+    <linearGradient id="full-accent" x1="54" y1="84" x2="188" y2="182" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DF0C8" />
+      <stop offset="1" stop-color="#35C58F" />
+    </linearGradient>
+  </defs>
+  <rect x="10" y="10" width="240" height="240" rx="70" fill="url(#full-bg)" />
+  <path d="M74 110C74 78.5198 99.5198 53 131 53C162.48 53 188 78.5198 188 110" stroke="#EAF1FF" stroke-width="12" stroke-linecap="round"/>
+  <path d="M56 112H206L194.144 188.419C192.18 201.08 181.277 210.4 168.464 210.4H93.5364C80.7227 210.4 69.8198 201.08 67.8558 188.419L56 112Z" fill="#F7FAFF"/>
+  <path d="M77 143H185" stroke="#7E93C6" stroke-width="8" stroke-linecap="round"/>
+  <path d="M88 170H174" stroke="#7E93C6" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="102" cy="157" r="9" fill="url(#full-accent)"/>
+  <circle cx="160" cy="157" r="9" fill="url(#full-accent)"/>
+  <text x="285" y="122" fill="#13203A" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="86" font-weight="800" letter-spacing="-2">NexBasket</text>
+  <text x="289" y="168" fill="#52617F" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="500">Commerce, Engineered by Database Integrity</text>
+</svg>
