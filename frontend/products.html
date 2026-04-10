@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products | DBMS Cart</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="navbar" id="navbar"></header>
+    <main class="container">
+      <h1>Products</h1>
+      <div class="card">
+        <div class="toolbar">
+          <input id="searchInput" placeholder="Search by product name..." />
+          <label class="muted" style="display:flex;align-items:center;gap:8px">
+            <input id="stockOnlyInput" type="checkbox" style="width:auto" />
+            In-stock only
+          </label>
+          <button class="inline" id="searchBtn">Apply Filters</button>
+        </div>
+        <div id="status"></div>
+      </div>
+      <section id="productsList" class="products-grid" style="margin-top:14px"></section>
+    </main>
+    <script type="module" src="products.js"></script>
+  </body>
+</html>

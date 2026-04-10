@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | DBMS Cart</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Database-Driven Shopping Cart</h1>
+      <p class="muted">Register a user or login to continue the e-commerce flow.</p>
+      <div class="grid grid-2">
+        <section class="card">
+          <h2>Register</h2>
+          <form id="registerForm">
+            <label for="regName">Name</label>
+            <input id="regName" required />
+            <label for="regEmail">Email</label>
+            <input id="regEmail" type="email" required />
+            <label for="regPassword">Password</label>
+            <input id="regPassword" type="password" required />
+            <label for="regPhone">Phone</label>
+            <input id="regPhone" />
+            <button type="submit">Create Account</button>
+          </form>
+          <div id="registerStatus"></div>
+        </section>
+
+        <section class="card">
+          <h2>Login</h2>
+          <form id="loginForm">
+            <label for="loginEmail">Email</label>
+            <input id="loginEmail" type="email" required />
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" type="password" required />
+            <button type="submit">Login</button>
+          </form>
+          <div id="loginStatus"></div>
+        </section>
+      </div>
+    </div>
+
+    <script type="module" src="login.js"></script>
+  </body>
+</html>
