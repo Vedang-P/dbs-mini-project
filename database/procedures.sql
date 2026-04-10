@@ -322,4 +322,45 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION cursor_low_stock_products()
+RETURNS TABLE (
+    product_id BIGINT,
+    sku VARCHAR(60),
+    product_name VARCHAR(160),
+    stock_qty INTEGER,
+    reorder_level INTEGER
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    cur_low_stock CURSOR FOR
+        SELECT
+            p.product_id,
+            p.sku,
+            p.product_name,
+            p.stock_qty,
+            p.reorder_level
+        FROM products p
+        WHERE p.stock_qty <= p.reorder_level
+        ORDER BY p.stock_qty ASC, p.product_name;
+    v_row RECORD;
+BEGIN
+    OPEN cur_low_stock;
+
+    LOOP
+        FETCH cur_low_stock INTO v_row;
+        EXIT WHEN NOT FOUND;
+
+        product_id := v_row.product_id;
+        sku := v_row.sku;
+        product_name := v_row.product_name;
+        stock_qty := v_row.stock_qty;
+        reorder_level := v_row.reorder_level;
+        RETURN NEXT;
+    END LOOP;
+
+    CLOSE cur_low_stock;
+END;
+$$;
+
 COMMIT;

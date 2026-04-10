@@ -333,3 +333,6 @@ SELECT
     (SELECT COUNT(*) FROM orders WHERE order_status = 'COMPLETED') AS completed_orders,
     (SELECT COUNT(*) FROM orders WHERE order_status = 'CANCELLED') AS cancelled_orders,
     (SELECT COALESCE(SUM(total_amount), 0) FROM orders WHERE order_status IN ('PLACED', 'COMPLETED')) AS gross_revenue;
+
+-- 8) Explicit cursor usage demo (OPEN/FETCH/CLOSE inside function).
+SELECT * FROM cursor_low_stock_products();
