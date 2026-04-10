@@ -132,7 +132,7 @@ Backend runs at `http://127.0.0.1:8000`.
 This repository is now configured for Vercel **Services** deployment using:
 
 - `experimentalServices` in `vercel.json`
-- `frontend` service at `/`
+- `frontend` service at `/` via `frontend/main.py` (FastAPI static file host)
 - `backend` FastAPI service at `/_/backend`
 - `api/index.py` as backend service entrypoint
 
