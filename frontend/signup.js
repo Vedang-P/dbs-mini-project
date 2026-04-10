@@ -1,8 +1,12 @@
 import { apiFetch } from "./api.js";
-import { showStatus } from "./ui.js";
+import { initRevealAnimations, showStatus } from "./ui.js";
 
 const registerForm = document.getElementById("registerForm");
 const registerStatus = document.getElementById("registerStatus");
+const signupPasswordInput = document.getElementById("regPassword");
+const toggleSignupPasswordBtn = document.getElementById("toggleSignupPassword");
+
+initRevealAnimations();
 
 registerForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -28,4 +32,11 @@ registerForm?.addEventListener("submit", async (event) => {
   } catch (error) {
     showStatus(registerStatus, error.message, "error");
   }
+});
+
+toggleSignupPasswordBtn?.addEventListener("click", () => {
+  if (!signupPasswordInput) return;
+  const isPassword = signupPasswordInput.type === "password";
+  signupPasswordInput.type = isPassword ? "text" : "password";
+  toggleSignupPasswordBtn.textContent = isPassword ? "🙈" : "👁";
 });

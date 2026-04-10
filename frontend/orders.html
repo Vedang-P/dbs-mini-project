@@ -7,15 +7,28 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="navbar" id="navbar"></header>
-    <main class="container">
-      <h1>Order History</h1>
-      <section class="card">
-        <div id="status"></div>
-        <div id="loadingOrders" class="muted">Loading orders...</div>
-        <div id="ordersList"></div>
-      </section>
+    <header id="navbar"></header>
+    <main class="site-main">
+      <div class="container section-stack">
+        <section class="section-head" data-reveal>
+          <div>
+            <h1 style="font-size:2.2rem">Order History</h1>
+            <p class="muted">Track status, view details, and cancel pending orders.</p>
+          </div>
+          <a class="btn btn-ghost" href="products.html">Shop More</a>
+        </section>
+
+        <section class="card panel" data-reveal>
+          <div id="status"></div>
+          <div id="loadingOrders" class="product-grid">
+            <div class="skeleton sk-card"></div>
+            <div class="skeleton sk-card"></div>
+          </div>
+          <div id="ordersList" class="section-stack"></div>
+        </section>
+      </div>
     </main>
+    <footer id="footer"></footer>
     <script type="module" src="orders.js"></script>
   </body>
 </html>

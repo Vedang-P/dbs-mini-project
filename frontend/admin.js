@@ -1,8 +1,10 @@
 import { apiFetch, requireActiveUser } from "./api.js";
-import { renderNavbar, showStatus } from "./ui.js";
+import { initRevealAnimations, renderFooter, renderNavbar, showStatus } from "./ui.js";
 
 const user = requireActiveUser();
 renderNavbar("admin");
+renderFooter();
+initRevealAnimations();
 
 const adminStatusEl = document.getElementById("adminStatus");
 const adminLoadingEl = document.getElementById("adminLoading");
@@ -37,14 +39,14 @@ function renderSummaryCards(summary) {
 
 function renderTable(targetEl, headers, rows) {
   if (!rows.length) {
-    targetEl.innerHTML = "<p class='muted'>No records found.</p>";
+    targetEl.innerHTML = "<div class='empty-state'>No records found.</div>";
     return;
   }
 
   targetEl.innerHTML = `
     <table class="insight-table">
       <thead>
-        <tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr>
+        <tr>${headers.map((header) => `<th>${header}</th>`).join("")}</tr>
       </thead>
       <tbody>
         ${rows
@@ -61,7 +63,7 @@ function renderTable(targetEl, headers, rows) {
 
 async function loadAdmin() {
   if (!user) return;
-  adminLoadingEl.style.display = "block";
+  adminLoadingEl.style.display = "grid";
 
   try {
     const me = await apiFetch("/auth/me");
@@ -82,22 +84,12 @@ async function loadAdmin() {
     renderTable(
       lowStockListEl,
       ["Product", "SKU", "Category", "Stock", "Reorder"],
-      (lowStockData.products || []).map((p) => [
-        p.product_name,
-        p.sku,
-        p.category_name,
-        p.stock_qty,
-        p.reorder_level,
-      ]),
+      (lowStockData.products || []).map((p) => [p.product_name, p.sku, p.category_name, p.stock_qty, p.reorder_level]),
     );
     renderTable(
       topProductsListEl,
       ["Product", "Units Sold", "Revenue"],
-      (topData.products || []).map((p) => [
-        p.product_name,
-        p.units_sold,
-        `₹${Number(p.revenue || 0).toFixed(2)}`,
-      ]),
+      (topData.products || []).map((p) => [p.product_name, p.units_sold, `₹${Number(p.revenue || 0).toFixed(2)}`]),
     );
     renderTable(
       inventoryAuditListEl,
@@ -123,6 +115,7 @@ async function loadAdmin() {
       ]),
     );
     adminLoadingEl.style.display = "none";
+    initRevealAnimations();
   } catch (error) {
     adminLoadingEl.style.display = "none";
     showStatus(adminStatusEl, error.message, "error");

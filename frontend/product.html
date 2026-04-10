@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Details | DBMS Cart</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="navbar"></header>
+    <main class="site-main">
+      <div class="container section-stack">
+        <div id="productStatus"></div>
+
+        <section id="productLoading" class="details-layout">
+          <div class="skeleton sk-card"></div>
+          <div class="skeleton sk-card"></div>
+        </section>
+
+        <section id="productDetailWrap" style="display:none" data-reveal>
+          <div class="details-layout">
+            <div>
+              <div class="gallery-main">
+                <div class="zoom-layer" id="mainThumb">PR</div>
+              </div>
+              <div class="thumb-grid" id="thumbGrid"></div>
+            </div>
+
+            <article class="card panel">
+              <span class="pill" id="productCategoryPill"></span>
+              <h1 style="font-size:2rem; margin-top:10px" id="productName"></h1>
+              <div class="product-row" style="margin-top:8px">
+                <strong id="productPrice" style="font-size:1.3rem"></strong>
+                <span class="stars" id="productStars"></span>
+              </div>
+              <p class="muted" style="margin-top:10px" id="productDescription"></p>
+
+              <div class="divider"></div>
+
+              <p class="muted">Select Size</p>
+              <div class="selector-row" id="sizeSelectors"></div>
+
+              <p class="muted" style="margin-top:12px">Select Color</p>
+              <div class="selector-row" id="colorSelectors"></div>
+
+              <div class="product-row" style="margin-top:14px">
+                <label for="productQty" class="muted">Quantity</label>
+                <input id="productQty" type="number" min="1" value="1" style="width:90px" />
+              </div>
+
+              <div class="product-row" style="margin-top:12px">
+                <button class="btn btn-primary" id="addToCartBtn">Add to Cart</button>
+                <button class="btn btn-ghost" id="wishlistBtn">Add to Wishlist</button>
+              </div>
+
+              <div class="tab-header" id="tabHeader">
+                <button class="tab-btn active" data-tab="description">Description</button>
+                <button class="tab-btn" data-tab="reviews">Reviews</button>
+                <button class="tab-btn" data-tab="shipping">Shipping</button>
+              </div>
+              <div class="tab-panel" id="tabPanel"></div>
+            </article>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="section-head">
+            <h2>Related Products</h2>
+          </div>
+          <div id="relatedProducts" class="product-grid"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer id="footer"></footer>
+    <script type="module" src="product.js"></script>
+  </body>
+</html>

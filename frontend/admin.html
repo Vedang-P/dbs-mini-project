@@ -7,38 +7,50 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="navbar" id="navbar"></header>
-    <main class="container">
-      <h1>Admin Insights</h1>
-      <p class="muted">Operational snapshot for examiner demo: revenue, stock risk, top sellers, and audits.</p>
-      <section id="adminStatus"></section>
+    <header id="navbar"></header>
+    <main class="site-main">
+      <div class="container section-stack">
+        <section class="section-head" data-reveal>
+          <div>
+            <h1 style="font-size:2.2rem">Admin Insights</h1>
+            <p class="muted">Live operational view for stock risk, sales trends, and audit records.</p>
+          </div>
+          <span class="pill">Read only</span>
+        </section>
 
-      <section id="adminLoading" class="card muted">Loading admin dashboard...</section>
+        <section id="adminStatus"></section>
+        <section id="adminLoading" class="product-grid">
+          <div class="skeleton sk-card"></div>
+          <div class="skeleton sk-card"></div>
+          <div class="skeleton sk-card"></div>
+        </section>
 
-      <section class="grid grid-4" id="summaryCards"></section>
+        <section class="metrics-grid" id="summaryCards" data-reveal></section>
 
-      <section class="grid grid-2">
-        <article class="card">
-          <h2>Low Stock Products</h2>
-          <div id="lowStockList" class="table-wrap"></div>
-        </article>
-        <article class="card">
-          <h2>Top Products</h2>
-          <div id="topProductsList" class="table-wrap"></div>
-        </article>
-      </section>
+        <section class="details-layout" data-reveal>
+          <article class="card panel">
+            <h2>Low Stock Products</h2>
+            <div id="lowStockList" class="table-wrap" style="margin-top:10px"></div>
+          </article>
+          <article class="card panel">
+            <h2>Top Products</h2>
+            <div id="topProductsList" class="table-wrap" style="margin-top:10px"></div>
+          </article>
+        </section>
 
-      <section class="grid grid-2">
-        <article class="card">
-          <h2>Inventory Audit</h2>
-          <div id="inventoryAuditList" class="table-wrap"></div>
-        </article>
-        <article class="card">
-          <h2>Order Audit</h2>
-          <div id="orderAuditList" class="table-wrap"></div>
-        </article>
-      </section>
+        <section class="details-layout" data-reveal>
+          <article class="card panel">
+            <h2>Inventory Audit</h2>
+            <div id="inventoryAuditList" class="table-wrap" style="margin-top:10px"></div>
+          </article>
+          <article class="card panel">
+            <h2>Order Audit</h2>
+            <div id="orderAuditList" class="table-wrap" style="margin-top:10px"></div>
+          </article>
+        </section>
+      </div>
     </main>
+    <footer id="footer"></footer>
     <script type="module" src="admin.js"></script>
   </body>
 </html>

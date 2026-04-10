@@ -1,8 +1,10 @@
 import { apiFetch, requireActiveUser } from "./api.js";
-import { renderNavbar, showStatus } from "./ui.js";
+import { initRevealAnimations, renderFooter, renderNavbar, showStatus } from "./ui.js";
 
 const user = requireActiveUser();
 renderNavbar("cart");
+renderFooter();
+initRevealAnimations();
 
 const statusEl = document.getElementById("status");
 const cartItemsEl = document.getElementById("cartItems");
@@ -11,7 +13,7 @@ const loadingCartEl = document.getElementById("loadingCart");
 
 async function loadCart() {
   if (!user) return;
-  loadingCartEl.style.display = "block";
+  loadingCartEl.style.display = "grid";
   cartItemsEl.innerHTML = "";
   try {
     const cart = await apiFetch("/cart");
@@ -21,19 +23,25 @@ async function loadCart() {
       .map(
         (item) => `
         <article class="cart-item">
-          <div class="cart-item-top">
+          <div class="cart-row">
             <strong>${item.product_name}</strong>
-            <span class="muted">${item.sku}</span>
+            <span class="pill">${item.sku}</span>
           </div>
-          <div class="cart-item-meta">
+          <div class="cart-meta">
             <span>Unit: ₹${Number(item.price).toFixed(2)}</span>
             <span>Stock: ${item.stock_qty}</span>
-            <span>Line: ₹${Number(item.line_total).toFixed(2)}</span>
+            <span>Line Total: ₹${Number(item.line_total).toFixed(2)}</span>
           </div>
-          <div class="cart-actions">
-            <input id="cart-qty-${item.cart_item_id}" type="number" min="1" max="${item.stock_qty}" value="${item.quantity}" />
-            <button class="inline" data-action="update" data-cart-item-id="${item.cart_item_id}">Update</button>
-            <button class="inline danger" data-action="remove" data-cart-item-id="${item.cart_item_id}">Remove</button>
+          <div class="cart-row" style="margin-top:12px">
+            <div class="qty-stepper">
+              <button data-action="decrease" data-cart-item-id="${item.cart_item_id}" aria-label="Decrease quantity">−</button>
+              <input id="cart-qty-${item.cart_item_id}" type="number" min="1" max="${item.stock_qty}" value="${item.quantity}" />
+              <button data-action="increase" data-cart-item-id="${item.cart_item_id}" aria-label="Increase quantity">+</button>
+            </div>
+            <div class="quick-links">
+              <button class="btn btn-ghost" data-action="update" data-cart-item-id="${item.cart_item_id}">Update</button>
+              <button class="btn btn-danger" data-action="remove" data-cart-item-id="${item.cart_item_id}">Remove</button>
+            </div>
           </div>
         </article>
       `,
@@ -41,7 +49,7 @@ async function loadCart() {
       .join("");
 
     if (!items.length) {
-      cartItemsEl.innerHTML = "<p class='muted'>Your cart is currently empty.</p>";
+      cartItemsEl.innerHTML = "<div class='empty-state'>Your cart is currently empty.</div>";
     }
 
     totalAmountEl.textContent = `Cart Total: ₹${Number(cart.total_amount || 0).toFixed(2)}`;
@@ -50,16 +58,25 @@ async function loadCart() {
       btn.addEventListener("click", async () => {
         const cartItemId = Number(btn.dataset.cartItemId);
         const action = btn.dataset.action;
+        const qtyInput = document.getElementById(`cart-qty-${cartItemId}`);
+        const currentQty = Number(qtyInput?.value || 1);
+
+        if (action === "increase") {
+          qtyInput.value = String(currentQty + 1);
+          return;
+        }
+        if (action === "decrease") {
+          qtyInput.value = String(Math.max(1, currentQty - 1));
+          return;
+        }
         if (action === "remove") {
           await removeItem(cartItemId);
           return;
         }
-
-        const qtyInput = document.getElementById(`cart-qty-${cartItemId}`);
-        const quantity = Number(qtyInput?.value || 1);
-        await updateItem(cartItemId, quantity);
+        await updateItem(cartItemId, Number(qtyInput?.value || 1));
       });
     });
+
     loadingCartEl.style.display = "none";
   } catch (error) {
     loadingCartEl.style.display = "none";

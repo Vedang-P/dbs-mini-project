@@ -7,27 +7,73 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container auth-shell">
-      <section class="card auth-card">
-        <h1>Create Account</h1>
-        <p class="muted">Sign up to start adding products to your cart.</p>
-        <form id="registerForm">
-          <label for="regName">Full Name</label>
-          <input id="regName" required />
-          <label for="regEmail">Email</label>
-          <input id="regEmail" type="email" required />
-          <label for="regPassword">Password</label>
-          <input id="regPassword" type="password" required />
-          <label for="regPhone">Phone</label>
-          <input id="regPhone" />
-          <button type="submit">Create Account</button>
-        </form>
-        <div id="registerStatus"></div>
-        <p class="muted" style="margin-top:14px">
-          Already have an account? <a href="login.html">Login</a>
-        </p>
+    <main class="auth-wrap">
+      <section class="auth-brand" data-reveal>
+        <div class="brand">
+          <span class="brand-badge">DB</span>
+          <span>DBMS Cart</span>
+        </div>
+        <div>
+          <h1>Create Your Account</h1>
+          <p class="muted" style="color:#d8e1ff; margin-top:12px">Join thousands of shoppers using a clean, reliable, and secure storefront experience.</p>
+        </div>
+        <ul>
+          <li>✔ Quick sign up in under 30 seconds</li>
+          <li>✔ Smart order tracking with status updates</li>
+          <li>✔ Data-backed inventory and fulfillment</li>
+        </ul>
       </section>
-    </div>
+
+      <section class="auth-panel" data-reveal>
+        <article class="auth-card">
+          <h2 class="auth-title">Sign Up</h2>
+          <p class="muted">Build your account and start shopping instantly.</p>
+
+          <form id="registerForm" class="form-grid">
+            <div class="form-field">
+              <label for="regName">Full Name</label>
+              <input id="regName" placeholder="Enter your full name" required />
+            </div>
+
+            <div class="form-field">
+              <label for="regEmail">Email</label>
+              <input id="regEmail" type="email" placeholder="you@example.com" required />
+            </div>
+
+            <div class="form-field">
+              <label for="regPassword">Password</label>
+              <div class="input-wrap">
+                <input id="regPassword" type="password" placeholder="Create password" required />
+                <button type="button" class="eye-btn" id="toggleSignupPassword" aria-label="Toggle password visibility">👁</button>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="regPhone">Phone</label>
+              <input id="regPhone" placeholder="+91..." />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+          </form>
+
+          <div class="divider"></div>
+          <button class="oauth-btn" type="button" aria-label="Continue with Google">
+            G Continue with Google
+          </button>
+          <div id="registerStatus"></div>
+          <div class="trust-row">
+            <span class="trust-chip">Encrypted sign up</span>
+            <span class="trust-chip">No hidden charges</span>
+            <span class="trust-chip">Easy cancellation</span>
+          </div>
+
+          <p class="muted" style="margin-top:14px">
+            Already registered?
+            <a href="login.html" style="color: var(--accent-strong); font-weight:700">Login here</a>
+          </p>
+        </article>
+      </section>
+    </main>
 
     <script type="module" src="signup.js"></script>
   </body>

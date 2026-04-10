@@ -7,23 +7,69 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container auth-shell">
-      <section class="card auth-card">
-        <h1>Welcome Back</h1>
-        <p class="muted">Login to continue to your shopping cart dashboard.</p>
-        <form id="loginForm">
-          <label for="loginEmail">Email</label>
-          <input id="loginEmail" type="email" required />
-          <label for="loginPassword">Password</label>
-          <input id="loginPassword" type="password" required />
-          <button type="submit">Login</button>
-        </form>
-        <div id="loginStatus"></div>
-        <p class="muted" style="margin-top:14px">
-          New here? <a href="signup.html">Create an account</a>
-        </p>
+    <main class="auth-wrap">
+      <section class="auth-brand" data-reveal>
+        <div class="brand">
+          <span class="brand-badge">DB</span>
+          <span>DBMS Cart</span>
+        </div>
+        <div>
+          <h1>Welcome Back</h1>
+          <p class="muted" style="color:#d8e1ff; margin-top:12px">Secure sign-in to manage your cart, orders, and real-time inventory checkout.</p>
+        </div>
+        <ul>
+          <li>✔ 256-bit encrypted authentication</li>
+          <li>✔ Session expiry & logout revocation</li>
+          <li>✔ Protected checkout + order history</li>
+        </ul>
       </section>
-    </div>
+
+      <section class="auth-panel" data-reveal>
+        <article class="auth-card">
+          <h2 class="auth-title">Login</h2>
+          <p class="muted">Continue to your personalized storefront.</p>
+
+          <form id="loginForm" class="form-grid">
+            <div class="form-field">
+              <label for="loginEmail">Email</label>
+              <input id="loginEmail" type="email" placeholder="you@example.com" required />
+            </div>
+
+            <div class="form-field">
+              <label for="loginPassword">Password</label>
+              <div class="input-wrap">
+                <input id="loginPassword" type="password" placeholder="Enter password" required />
+                <button type="button" class="eye-btn" id="toggleLoginPassword" aria-label="Toggle password visibility">👁</button>
+              </div>
+            </div>
+
+            <label class="inline-check">
+              <input type="checkbox" id="rememberMe" checked />
+              Remember me on this device
+            </label>
+
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          </form>
+
+          <div class="divider"></div>
+          <button class="oauth-btn" type="button" aria-label="Continue with Google">
+            G Continue with Google
+          </button>
+
+          <div id="loginStatus"></div>
+          <div class="trust-row">
+            <span class="trust-chip">Secure session</span>
+            <span class="trust-chip">Encrypted credentials</span>
+            <span class="trust-chip">Fast checkout access</span>
+          </div>
+
+          <p class="muted" style="margin-top:14px">
+            New here?
+            <a href="signup.html" style="color: var(--accent-strong); font-weight:700">Create account</a>
+          </p>
+        </article>
+      </section>
+    </main>
 
     <script type="module" src="login.js"></script>
   </body>

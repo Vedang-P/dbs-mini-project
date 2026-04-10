@@ -7,20 +7,34 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="navbar" id="navbar"></header>
-    <main class="container">
-      <h1>My Cart</h1>
-      <section class="card">
-        <div id="status"></div>
-        <div id="loadingCart" class="muted">Loading cart...</div>
-        <div id="cartItems"></div>
-        <h3 id="totalAmount"></h3>
-        <div class="quick-links">
-          <a href="products.html">Continue shopping</a>
-          <a href="checkout.html">Proceed to checkout</a>
-        </div>
-      </section>
+    <header id="navbar"></header>
+    <main class="site-main">
+      <div class="container section-stack">
+        <section class="section-head" data-reveal>
+          <div>
+            <h1 style="font-size:2.2rem">My Cart</h1>
+            <p class="muted">Review selected products before checkout.</p>
+          </div>
+          <div class="quick-links">
+            <a class="btn btn-ghost" href="products.html">Continue Shopping</a>
+            <a class="btn btn-primary" href="checkout.html">Proceed to Checkout</a>
+          </div>
+        </section>
+
+        <section class="card panel" data-reveal>
+          <div id="status"></div>
+          <div id="loadingCart" class="product-grid">
+            <div class="skeleton sk-card"></div>
+            <div class="skeleton sk-card"></div>
+          </div>
+          <div id="cartItems" class="section-stack"></div>
+          <div class="summary-box" style="margin-top:12px">
+            <h3 id="totalAmount">Cart Total: ₹0.00</h3>
+          </div>
+        </section>
+      </div>
     </main>
+    <footer id="footer"></footer>
     <script type="module" src="cart.js"></script>
   </body>
 </html>

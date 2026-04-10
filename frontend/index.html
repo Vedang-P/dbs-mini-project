@@ -3,10 +3,108 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="refresh" content="0; url=login.html" />
-    <title>Redirecting...</title>
+    <title>DBMS Cart | Premium Commerce</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <p>Redirecting to login page...</p>
+    <header id="navbar"></header>
+
+    <main class="site-main">
+      <div class="container">
+        <section class="hero" data-reveal>
+          <div class="hero-layout">
+            <div class="hero-copy">
+              <span class="hero-kicker">New Season · Trusted Checkout</span>
+              <h1>Shop Elevated Essentials For Modern Living</h1>
+              <p class="muted">
+                Discover curated categories, fast fulfillment, and a seamless checkout experience built on transaction-safe inventory.
+              </p>
+              <div class="hero-actions">
+                <a href="products.html" class="btn btn-primary">Browse Products</a>
+                <a href="signup.html" class="btn btn-ghost">Create Account</a>
+              </div>
+            </div>
+            <div class="hero-bg" aria-hidden="true">
+              <span class="orb orb-a"></span>
+              <span class="orb orb-b"></span>
+              <span class="orb orb-c"></span>
+              <article class="glass-card">
+                <p class="muted" style="font-size: 0.85rem">Trending This Week</p>
+                <h3 style="margin-top: 6px">Premium Picks With Smart Delivery</h3>
+                <p class="muted" style="margin-top: 8px; font-size: 0.9rem">Inventory synced in real-time with secure order workflows.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="landing-section" data-reveal>
+          <div class="section-head">
+            <h2>Browse By Category</h2>
+            <a href="products.html" class="muted">View all products →</a>
+          </div>
+          <div class="scroll-chips" id="landingCategoryChips"></div>
+        </section>
+
+        <section class="landing-section" data-reveal>
+          <div class="section-head">
+            <h2>Featured Products</h2>
+            <span class="muted">Handpicked editor’s choice</span>
+          </div>
+          <div id="featuredProducts" class="product-grid"></div>
+        </section>
+
+        <section class="landing-section" data-reveal>
+          <div class="section-head">
+            <h2>Why Customers Choose Us</h2>
+          </div>
+          <div class="feature-grid">
+            <article class="feature">
+              <div class="feature-icon">⚡</div>
+              <h3>Fast Delivery</h3>
+              <p class="muted">Optimized order routing and inventory-led dispatch for quicker shipping.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon">🔒</div>
+              <h3>Secure Payments</h3>
+              <p class="muted">Protected checkout flow with robust session handling and safe data practices.</p>
+            </article>
+            <article class="feature">
+              <div class="feature-icon">↺</div>
+              <h3>Easy Returns</h3>
+              <p class="muted">Flexible cancellation and inventory rollback with complete audit visibility.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="landing-section" data-reveal>
+          <div class="section-head">
+            <h2>What Shoppers Say</h2>
+          </div>
+          <div class="testimonial-grid">
+            <article class="card panel">
+              <p>"The interface feels premium and the checkout flow is genuinely smooth. Everything just works."</p>
+              <p class="muted" style="margin-top: 12px">Aarav M. · Frequent Buyer</p>
+            </article>
+            <article class="card panel">
+              <p>"Loved the clean product browsing and instant order updates. It feels like a real production store."</p>
+              <p class="muted" style="margin-top: 12px">Riya S. · Design Consultant</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="landing-section newsletter" data-reveal>
+          <h2>Get Weekly Drops & Offers</h2>
+          <p>Join our list for new arrivals, curated picks, and early access to limited collections.</p>
+          <form id="newsletterForm">
+            <input type="email" id="newsletterEmail" placeholder="Enter your email address" aria-label="Email address" required />
+            <button class="btn" type="submit">Subscribe</button>
+          </form>
+          <div id="newsletterStatus"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer id="footer"></footer>
+    <script type="module" src="landing.js"></script>
   </body>
 </html>

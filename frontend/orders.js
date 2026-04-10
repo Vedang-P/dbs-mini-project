@@ -1,8 +1,10 @@
 import { apiFetch, requireActiveUser } from "./api.js";
-import { renderNavbar, showStatus } from "./ui.js";
+import { initRevealAnimations, renderFooter, renderNavbar, showStatus } from "./ui.js";
 
 const user = requireActiveUser();
 renderNavbar("orders");
+renderFooter();
+initRevealAnimations();
 
 const statusEl = document.getElementById("status");
 const ordersListEl = document.getElementById("ordersList");
@@ -13,18 +15,29 @@ function itemRows(items = []) {
   return items
     .map(
       (item) => `
-        <div class="order-item">
-          <strong>${item.product_name}</strong><br/>
-          Qty: ${item.quantity} | Unit: ₹${Number(item.unit_price).toFixed(2)} | Line: ₹${Number(item.line_total).toFixed(2)}
+        <div class="order-card">
+          <strong>${item.product_name}</strong>
+          <div class="order-meta">
+            <span>Qty: ${item.quantity}</span>
+            <span>Unit: ₹${Number(item.unit_price).toFixed(2)}</span>
+            <span>Line: ₹${Number(item.line_total).toFixed(2)}</span>
+          </div>
         </div>
       `,
     )
     .join("");
 }
 
+function statusPillClass(status) {
+  if (status === "PLACED") return "pill";
+  if (status === "COMPLETED") return "pill success";
+  if (status === "CANCELLED") return "pill danger";
+  return "pill warning";
+}
+
 async function loadOrders() {
   if (!user) return;
-  loadingOrdersEl.style.display = "block";
+  loadingOrdersEl.style.display = "grid";
   ordersListEl.innerHTML = "";
   try {
     const data = await apiFetch("/orders");
@@ -33,20 +46,24 @@ async function loadOrders() {
     ordersListEl.innerHTML = orders
       .map(
         (order) => `
-          <article class="card" style="margin-bottom: 12px">
-            <h3>Order #${order.order_id}</h3>
-            <p><strong>Status:</strong> <span class="pill">${order.order_status}</span></p>
-            <p><strong>Placed At:</strong> ${new Date(order.placed_at).toLocaleString()}</p>
-            <p><strong>Total:</strong> ₹${Number(order.total_amount).toFixed(2)}</p>
-            <p><strong>Items:</strong> ${order.item_count || (order.items?.length ?? 0)}</p>
+          <article class="order-card">
+            <div class="order-row">
+              <h3>Order #${order.order_id}</h3>
+              <span class="${statusPillClass(order.order_status)}">${order.order_status}</span>
+            </div>
+            <div class="order-meta">
+              <span>Placed: ${new Date(order.placed_at).toLocaleString()}</span>
+              <span>Total: ₹${Number(order.total_amount).toFixed(2)}</span>
+              <span>Items: ${order.item_count || (order.items?.length ?? 0)}</span>
+            </div>
             <div id="order-details-${order.order_id}" style="display:none; margin-top:10px"></div>
-            <div class="quick-links">
-              <button class="inline secondary order-details-btn" data-order-id="${order.order_id}">View Details</button>
-            ${
-              order.order_status === "PLACED"
-                ? `<button class="danger inline cancel-order-btn" data-order-id="${order.order_id}">Cancel Order</button>`
-                : ""
-            }
+            <div class="quick-links" style="margin-top:12px">
+              <button class="btn btn-ghost order-details-btn" data-order-id="${order.order_id}">View Details</button>
+              ${
+                order.order_status === "PLACED"
+                  ? `<button class="btn btn-danger cancel-order-btn" data-order-id="${order.order_id}">Cancel Order</button>`
+                  : ""
+              }
             </div>
           </article>
         `,
@@ -54,7 +71,7 @@ async function loadOrders() {
       .join("");
 
     if (!orders.length) {
-      ordersListEl.innerHTML = "<p class='muted'>No orders found yet.</p>";
+      ordersListEl.innerHTML = "<div class='empty-state'>No orders found yet.</div>";
     }
 
     ordersListEl.querySelectorAll(".order-details-btn").forEach((btn) => {

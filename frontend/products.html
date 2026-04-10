@@ -7,56 +7,112 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="navbar" id="navbar"></header>
-    <main class="container">
-      <section class="hero card">
-        <h1>Discover Products</h1>
-        <p class="muted">Browse by category, refine with smart filters, and add items to your cart quickly.</p>
-      </section>
+    <header id="navbar"></header>
 
-      <section class="card">
-        <div class="toolbar grid-4">
-          <input id="searchInput" placeholder="Search products..." />
-          <select id="sortInput">
-            <option value="name_asc">Sort: Name A-Z</option>
-            <option value="name_desc">Sort: Name Z-A</option>
-            <option value="price_asc">Sort: Price Low-High</option>
-            <option value="price_desc">Sort: Price High-Low</option>
-            <option value="stock_desc">Sort: Stock High-Low</option>
-          </select>
-          <input id="minPriceInput" type="number" min="0" placeholder="Min price" />
-          <input id="maxPriceInput" type="number" min="0" placeholder="Max price" />
-        </div>
-        <div class="toolbar">
-          <label class="muted inline-check">
-            <input id="stockOnlyInput" type="checkbox" />
-            In-stock only
-          </label>
-          <button class="inline" id="searchBtn">Apply</button>
-          <button class="inline secondary" id="clearBtn">Clear</button>
-        </div>
-        <div id="categoryChips" class="chips"></div>
-        <div id="status"></div>
-      </section>
+    <main class="site-main">
+      <div class="container section-stack">
+        <section class="hero" data-reveal>
+          <div class="hero-layout" style="grid-template-columns: 1fr 0.8fr; min-height: 260px">
+            <div class="hero-copy">
+              <span class="hero-kicker">Catalog</span>
+              <h1>Find What Fits Your Style</h1>
+              <p class="muted">Filter by category, price, stock, and rating. Tap into a cleaner shopping workflow with quick add actions.</p>
+            </div>
+            <div class="hero-bg" aria-hidden="true">
+              <span class="orb orb-a"></span>
+              <span class="orb orb-b"></span>
+              <article class="glass-card">
+                <h3>Curated Products</h3>
+                <p class="muted" style="margin-top:8px">Smart sorting, rich cards, and fast actions.</p>
+              </article>
+            </div>
+          </div>
+        </section>
 
-      <section class="results-header">
-        <h2>Catalog</h2>
-        <span id="resultCount" class="muted"></span>
-      </section>
-      <section id="productsList" class="products-grid" style="margin-top:14px"></section>
-      <section id="loadingProducts" class="card muted" style="display:none; margin-top:14px">
-        Loading products...
-      </section>
-      <section id="emptyProducts" class="card muted" style="display:none; margin-top:14px">
-        No products match your filters.
-      </section>
-      <section class="card" style="margin-top:14px">
-        <div class="quick-links">
-          <a href="cart.html">Go to cart</a>
-          <a href="checkout.html">Go to checkout</a>
-        </div>
-      </section>
+        <section class="catalog-layout">
+          <aside class="card filter-panel" data-reveal>
+            <h3>Filters</h3>
+            <div class="filter-group">
+              <label for="searchInput" class="muted">Search</label>
+              <input id="searchInput" placeholder="Search products..." />
+            </div>
+
+            <div class="filter-group">
+              <label class="muted">Category</label>
+              <div id="categoryChips" class="scroll-chips"></div>
+            </div>
+
+            <div class="filter-group">
+              <label class="muted">Price Range</label>
+              <div class="price-row">
+                <input id="minPriceInput" type="number" min="0" placeholder="Min" />
+                <input id="maxPriceInput" type="number" min="0" placeholder="Max" />
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label class="muted">Rating</label>
+              <div class="rating-filter" id="ratingFilter">
+                <button class="chip active" data-rating="">All</button>
+                <button class="chip" data-rating="4">4★ & above</button>
+                <button class="chip" data-rating="4.5">4.5★ & above</button>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label class="inline-check">
+                <input id="stockOnlyInput" type="checkbox" />
+                In-stock only
+              </label>
+            </div>
+
+            <div class="filter-group">
+              <button class="btn btn-primary" id="searchBtn">Apply Filters</button>
+              <button class="btn btn-ghost" id="clearBtn">Clear</button>
+            </div>
+          </aside>
+
+          <div data-reveal>
+            <div class="catalog-toolbar">
+              <div>
+                <h2>Products</h2>
+                <p class="muted" id="resultCount">0 products</p>
+              </div>
+              <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+                <div class="search-wrap">
+                  <span class="search-icon">⌕</span>
+                  <input id="searchInlineInput" placeholder="Quick search..." />
+                </div>
+                <select id="sortInput" aria-label="Sort products">
+                  <option value="name_asc">Name A-Z</option>
+                  <option value="name_desc">Name Z-A</option>
+                  <option value="price_asc">Price Low-High</option>
+                  <option value="price_desc">Price High-Low</option>
+                  <option value="stock_desc">Stock High-Low</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="status"></div>
+            <section id="productsList" class="product-grid"></section>
+            <section id="loadingProducts" class="product-grid" style="display:none">
+              <div class="skeleton sk-card"></div>
+              <div class="skeleton sk-card"></div>
+              <div class="skeleton sk-card"></div>
+            </section>
+            <section id="emptyProducts" class="empty-state" style="display:none">No products match your filters.</section>
+
+            <div class="pagination" id="paginationWrap">
+              <button class="btn btn-ghost" id="prevPageBtn">Previous</button>
+              <span class="muted" id="pageIndicator">Page 1</span>
+              <button class="btn btn-ghost" id="nextPageBtn">Next</button>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
+
+    <footer id="footer"></footer>
     <script type="module" src="products.js"></script>
   </body>
 </html>

@@ -7,20 +7,32 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="navbar" id="navbar"></header>
-    <main class="container">
-      <h1>Checkout</h1>
-      <section class="card">
-        <div id="status"></div>
-        <div id="loadingCheckout" class="muted">Loading checkout summary...</div>
-        <div id="checkoutSummary"></div>
-        <button id="placeOrderBtn">Place Order</button>
-        <div class="quick-links">
-          <a href="cart.html">Back to cart</a>
-          <a href="orders.html">View order history</a>
-        </div>
-      </section>
+    <header id="navbar"></header>
+    <main class="site-main">
+      <div class="container section-stack">
+        <section class="section-head" data-reveal>
+          <div>
+            <h1 style="font-size:2.2rem">Checkout</h1>
+            <p class="muted">Confirm your cart and place the order securely.</p>
+          </div>
+          <div class="quick-links">
+            <a class="btn btn-ghost" href="cart.html">Back to Cart</a>
+            <a class="btn btn-ghost" href="orders.html">Order History</a>
+          </div>
+        </section>
+
+        <section class="card panel" data-reveal>
+          <div id="status"></div>
+          <div id="loadingCheckout" class="product-grid">
+            <div class="skeleton sk-card"></div>
+            <div class="skeleton sk-card"></div>
+          </div>
+          <div id="checkoutSummary"></div>
+          <button id="placeOrderBtn" class="btn btn-primary" style="margin-top:14px">Place Order</button>
+        </section>
+      </div>
     </main>
+    <footer id="footer"></footer>
     <script type="module" src="checkout.js"></script>
   </body>
 </html>
