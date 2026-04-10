@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Insights | DBMS Cart</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="navbar" id="navbar"></header>
+    <main class="container">
+      <h1>Admin Insights</h1>
+      <p class="muted">Operational snapshot for examiner demo: revenue, stock risk, top sellers, and audits.</p>
+      <section id="adminStatus"></section>
+
+      <section id="adminLoading" class="card muted">Loading admin dashboard...</section>
+
+      <section class="grid grid-4" id="summaryCards"></section>
+
+      <section class="grid grid-2">
+        <article class="card">
+          <h2>Low Stock Products</h2>
+          <div id="lowStockList" class="table-wrap"></div>
+        </article>
+        <article class="card">
+          <h2>Top Products</h2>
+          <div id="topProductsList" class="table-wrap"></div>
+        </article>
+      </section>
+
+      <section class="grid grid-2">
+        <article class="card">
+          <h2>Inventory Audit</h2>
+          <div id="inventoryAuditList" class="table-wrap"></div>
+        </article>
+        <article class="card">
+          <h2>Order Audit</h2>
+          <div id="orderAuditList" class="table-wrap"></div>
+        </article>
+      </section>
+    </main>
+    <script type="module" src="admin.js"></script>
+  </body>
+</html>

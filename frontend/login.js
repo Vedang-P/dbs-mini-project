@@ -1,8 +1,13 @@
-import { apiFetch, setActiveUser } from "./api.js";
+import { apiFetch, getAuthSession, setAuthSession } from "./api.js";
 import { showStatus } from "./ui.js";
 
 const loginForm = document.getElementById("loginForm");
 const loginStatus = document.getElementById("loginStatus");
+
+const existingSession = getAuthSession();
+if (existingSession?.access_token && existingSession?.user?.user_id) {
+  window.location.href = "products.html";
+}
 
 loginForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -14,14 +19,19 @@ loginForm?.addEventListener("submit", async (event) => {
   };
 
   try {
-    const result = await apiFetch("/users/login", {
+    const result = await apiFetch("/auth/login", {
       method: "POST",
       body: JSON.stringify(payload),
     });
-    setActiveUser({
-      user_id: result.user_id,
-      name: result.name,
-      email: result.email,
+    setAuthSession({
+      access_token: result.access_token,
+      expires_at: result.expires_at,
+      user: {
+        user_id: result.user.user_id,
+        name: result.user.name,
+        email: result.user.email,
+        is_admin: result.user.is_admin,
+      },
     });
     showStatus(loginStatus, "Login successful. Redirecting to products...", "success");
     setTimeout(() => {

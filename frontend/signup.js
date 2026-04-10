@@ -16,7 +16,7 @@ registerForm?.addEventListener("submit", async (event) => {
   };
 
   try {
-    await apiFetch("/users/register", {
+    await apiFetch("/auth/register", {
       method: "POST",
       body: JSON.stringify(payload),
     });

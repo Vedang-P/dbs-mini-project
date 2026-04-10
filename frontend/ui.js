@@ -1,4 +1,4 @@
-import { clearActiveUser, getActiveUser } from "./api.js";
+import { apiFetch, clearActiveUser, getActiveUser } from "./api.js";
 
 export function renderNavbar(activePage) {
   const user = getActiveUser();
@@ -11,6 +11,9 @@ export function renderNavbar(activePage) {
     ["checkout.html", "Checkout", "checkout"],
     ["orders.html", "Orders", "orders"],
   ];
+  if (user?.is_admin) {
+    links.push(["admin.html", "Admin", "admin"]);
+  }
 
   const linksHtml = links
     .map(([href, label, key]) => {
@@ -28,7 +31,7 @@ export function renderNavbar(activePage) {
         ${linksHtml}
       </div>
       <div class="nav-links">
-        <span class="muted">${user ? `User #${user.user_id}` : "Guest"}</span>
+        <span class="muted">${user ? `${user.name || "User"}${user.is_admin ? " (Admin)" : ""}` : "Guest"}</span>
         <button class="inline secondary" id="logoutBtn">Logout</button>
       </div>
     </div>
@@ -36,7 +39,12 @@ export function renderNavbar(activePage) {
 
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await apiFetch("/auth/logout", { method: "POST" });
+      } catch (_) {
+        // Logout should still clear local session if server revoke fails.
+      }
       clearActiveUser();
       window.location.href = "login.html";
     });

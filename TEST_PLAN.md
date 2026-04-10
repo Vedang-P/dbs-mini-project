@@ -1,130 +1,138 @@
 # TEST PLAN
 
-This checklist is designed for grading-oriented verification of correctness, integrity, and demo readiness.
+Focused checklist for upgraded production-lite flow (auth sessions + richer cart + admin insights).
 
-## 1) Schema & Integrity Tests
+## 1) Schema and Integrity
 
-1. Unique email:
+1. Unique email constraint:
 ```sql
 INSERT INTO users (full_name, email, password_hash) VALUES ('X', 'alice@example.com', 'h');
--- Expect: UNIQUE violation
 ```
+Expect: unique violation.
 
-2. FK enforcement:
+2. FK integrity:
 ```sql
 INSERT INTO products (category_id, sku, product_name, price, stock_qty)
 VALUES (99999, 'BAD-001', 'Invalid Product', 10, 5);
--- Expect: FK violation
 ```
+Expect: FK violation.
 
-3. CHECK validation:
+3. Session table + admin column existence:
 ```sql
-INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (1, 1, 0);
--- Expect: check violation (quantity > 0)
+\d users
+\d user_sessions
 ```
+Expect: `users.is_admin` and `user_sessions` present.
 
-## 2) Procedure Tests
+## 2) Procedure + Trigger Behavior
 
-1. `add_to_cart` success:
+1. Add cart item:
 ```sql
 SELECT * FROM add_to_cart(1, 1, 1);
 ```
 
-2. `add_to_cart` failure on invalid qty:
+2. Set cart quantity:
 ```sql
-SELECT * FROM add_to_cart(1, 1, 0);
--- Expect: exception
+SELECT * FROM set_cart_item_quantity(1, <cart_item_id>, 2);
 ```
 
-3. `place_order` success:
+3. Remove cart item:
+```sql
+SELECT remove_cart_item(1, <cart_item_id>);
+```
+
+4. Place order:
 ```sql
 SELECT place_order(1);
 ```
 
-4. `place_order` rollback behavior:
-- Put an item in cart with quantity higher than stock and run `place_order`.
-- Expect: order not created, cart unchanged, no partial stock reduction.
-
-5. `cancel_order` success:
+5. Cancel order:
 ```sql
-SELECT cancel_order(<placed_order_id>, 1);
+SELECT cancel_order(<order_id>, 1);
 ```
 
-## 3) Trigger Tests
+6. Trigger checks:
+- stock cannot go negative
+- inventory and order audits are populated
 
-1. Prevent negative stock:
-```sql
-UPDATE products SET stock_qty = -1 WHERE product_id = 1;
--- Expect: trigger exception
-```
+## 3) API Contract Tests
 
-2. Reduce stock after order:
-- Compare stock before and after successful `place_order`.
-- Expect: stock decreases by ordered quantity.
-
-3. Audit logging:
-```sql
-SELECT * FROM inventory_audit ORDER BY changed_at DESC LIMIT 5;
-SELECT * FROM order_audit ORDER BY changed_at DESC LIMIT 5;
-```
-- Expect rows for stock changes and order status transitions.
-
-## 4) API Tests
-
-Use FastAPI docs (`/docs`) or curl:
-
-1. Register:
+### Auth
 ```bash
-curl -X POST http://127.0.0.1:8000/users/register \
+curl -X POST http://127.0.0.1:8000/auth/register \
   -H "Content-Type: application/json" \
   -d '{"name":"Demo User","email":"demo.user@example.com","password":"demo1234","phone":"9991112233"}'
 ```
 
-2. Login:
 ```bash
-curl -X POST http://127.0.0.1:8000/users/login \
+curl -X POST http://127.0.0.1:8000/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"demo.user@example.com","password":"demo1234"}'
 ```
 
-3. Product listing:
+Use returned `access_token`:
 ```bash
-curl "http://127.0.0.1:8000/products?in_stock_only=true"
+TOKEN="<access_token>"
 ```
 
-4. Add to cart:
 ```bash
-curl -X POST http://127.0.0.1:8000/cart \
+curl http://127.0.0.1:8000/auth/me -H "Authorization: Bearer $TOKEN"
+```
+
+### Catalog / Cart / Orders
+```bash
+curl "http://127.0.0.1:8000/products?in_stock_only=true&sort=price_asc"
+```
+
+```bash
+curl -X POST http://127.0.0.1:8000/cart/items \
+  -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"user_id":1,"product_id":1,"quantity":1}'
+  -d '{"product_id":1,"quantity":1}'
 ```
 
-5. Place order:
 ```bash
-curl -X POST http://127.0.0.1:8000/order \
+curl http://127.0.0.1:8000/cart -H "Authorization: Bearer $TOKEN"
+```
+
+```bash
+curl -X POST http://127.0.0.1:8000/orders \
+  -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"user_id":1}'
+  -d '{}'
 ```
 
-6. Order history:
 ```bash
-curl "http://127.0.0.1:8000/orders?user_id=1"
+curl http://127.0.0.1:8000/orders -H "Authorization: Bearer $TOKEN"
 ```
 
-## 5) UI Flow Tests
+## 4) Admin Endpoint Tests
 
-1. Register from `login.html`.
-2. Login and verify redirect to products page.
-3. Add multiple products with different quantities.
-4. Open cart and verify totals.
-5. Open checkout and place order.
-6. Verify order appears in order history.
-7. Cancel a placed order and verify status update.
+Login with admin account and call:
+
+```bash
+curl http://127.0.0.1:8000/admin/summary -H "Authorization: Bearer $TOKEN"
+curl http://127.0.0.1:8000/admin/low-stock -H "Authorization: Bearer $TOKEN"
+curl http://127.0.0.1:8000/admin/top-products -H "Authorization: Bearer $TOKEN"
+curl http://127.0.0.1:8000/admin/audit -H "Authorization: Bearer $TOKEN"
+```
+
+Expect non-admin token to get `403`.
+
+## 5) UI Flow Validation
+
+1. Login page default + signup link at bottom.
+2. Signup page works and redirects to login.
+3. Products: category chips, sort, search, price filters.
+4. Cart: quantity update and remove actions.
+5. Checkout: order summary and place order.
+6. Orders: detail expansion and cancel path.
+7. Admin page: metrics + low stock + top products + audit feeds.
 
 ## 6) Acceptance Criteria
 
-- All mandatory entities exist and are linked with proper constraints.
-- Basic + complex SQL queries run and produce meaningful results.
-- Procedures and triggers execute with visible business effects.
-- API flow is stable and does not leave inconsistent data.
-- UI demonstrates complete end-to-end user journey.
+- Protected routes enforce token auth.
+- Legacy endpoints still respond for compatibility.
+- Cart/order operations remain transaction-safe.
+- Trigger and procedure effects are visible in DB.
+- UX is polished and examiner demo flow is stable.

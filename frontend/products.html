@@ -9,19 +9,53 @@
   <body>
     <header class="navbar" id="navbar"></header>
     <main class="container">
-      <h1>Products</h1>
-      <div class="card">
+      <section class="hero card">
+        <h1>Discover Products</h1>
+        <p class="muted">Browse by category, refine with smart filters, and add items to your cart quickly.</p>
+      </section>
+
+      <section class="card">
+        <div class="toolbar grid-4">
+          <input id="searchInput" placeholder="Search products..." />
+          <select id="sortInput">
+            <option value="name_asc">Sort: Name A-Z</option>
+            <option value="name_desc">Sort: Name Z-A</option>
+            <option value="price_asc">Sort: Price Low-High</option>
+            <option value="price_desc">Sort: Price High-Low</option>
+            <option value="stock_desc">Sort: Stock High-Low</option>
+          </select>
+          <input id="minPriceInput" type="number" min="0" placeholder="Min price" />
+          <input id="maxPriceInput" type="number" min="0" placeholder="Max price" />
+        </div>
         <div class="toolbar">
-          <input id="searchInput" placeholder="Search by product name..." />
-          <label class="muted" style="display:flex;align-items:center;gap:8px">
-            <input id="stockOnlyInput" type="checkbox" style="width:auto" />
+          <label class="muted inline-check">
+            <input id="stockOnlyInput" type="checkbox" />
             In-stock only
           </label>
-          <button class="inline" id="searchBtn">Apply Filters</button>
+          <button class="inline" id="searchBtn">Apply</button>
+          <button class="inline secondary" id="clearBtn">Clear</button>
         </div>
+        <div id="categoryChips" class="chips"></div>
         <div id="status"></div>
-      </div>
+      </section>
+
+      <section class="results-header">
+        <h2>Catalog</h2>
+        <span id="resultCount" class="muted"></span>
+      </section>
       <section id="productsList" class="products-grid" style="margin-top:14px"></section>
+      <section id="loadingProducts" class="card muted" style="display:none; margin-top:14px">
+        Loading products...
+      </section>
+      <section id="emptyProducts" class="card muted" style="display:none; margin-top:14px">
+        No products match your filters.
+      </section>
+      <section class="card" style="margin-top:14px">
+        <div class="quick-links">
+          <a href="cart.html">Go to cart</a>
+          <a href="checkout.html">Go to checkout</a>
+        </div>
+      </section>
     </main>
     <script type="module" src="products.js"></script>
   </body>
