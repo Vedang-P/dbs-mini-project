@@ -10,6 +10,8 @@ Run files in this order:
 Quick verification checklist:
 
 - `SELECT * FROM add_to_cart(1, 1, 1);`
+- `SELECT * FROM set_cart_item_quantity(1, <cart_item_id>, 2);`
+- `SELECT remove_cart_item(1, <cart_item_id>);`
 - `SELECT place_order(1);`
 - `SELECT update_inventory(1, 5, 'RESTOCK_TEST');`
 - `SELECT cancel_order(<placed_order_id>, 1);`

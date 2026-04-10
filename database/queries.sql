@@ -6,7 +6,7 @@ BEGIN;
 
 INSERT INTO users (full_name, email, password_hash, phone)
 VALUES
-    ('Alice Johnson', 'alice@example.com', '$2b$12$seed_hash', '9876543201'),
+    ('Alice Johnson', 'alice@example.com', 'pbkdf2_sha256$240000$2NGuhKYuKLxyWB0Nd1b00g==$4ZV7RI53Y8sUElRRXyST/zU/cqRQDZ24J5d/MEBl82Y=', '9876543201'),
     ('Bob Smith', 'bob@example.com', '$2b$12$seed_hash', '9876543202'),
     ('Charlie Davis', 'charlie@example.com', '$2b$12$seed_hash', '9876543203'),
     ('Diana Lee', 'diana@example.com', '$2b$12$seed_hash', '9876543204'),
@@ -17,6 +17,12 @@ VALUES
     ('Ishan Verma', 'ishan@example.com', '$2b$12$seed_hash', '9876543209'),
     ('Julia Wilson', 'julia@example.com', '$2b$12$seed_hash', '9876543210')
 ON CONFLICT (email) DO NOTHING;
+
+UPDATE users
+SET
+    is_admin = TRUE,
+    password_hash = 'pbkdf2_sha256$240000$2NGuhKYuKLxyWB0Nd1b00g==$4ZV7RI53Y8sUElRRXyST/zU/cqRQDZ24J5d/MEBl82Y='
+WHERE email = 'alice@example.com';
 
 INSERT INTO categories (category_name, description)
 VALUES
@@ -186,6 +192,11 @@ FROM products p
 JOIN categories c ON c.category_id = p.category_id
 ORDER BY p.product_name;
 
+-- 1A) List all categories.
+SELECT category_id, category_name, description
+FROM categories
+ORDER BY category_name;
+
 -- 2) View cart items for a user (replace email as needed).
 SELECT
     u.user_id,
@@ -313,3 +324,12 @@ SELECT
 FROM order_audit oa
 ORDER BY oa.changed_at DESC
 LIMIT 20;
+
+-- 7) Admin summary snapshot.
+SELECT
+    (SELECT COUNT(*) FROM users) AS total_users,
+    (SELECT COUNT(*) FROM orders) AS total_orders,
+    (SELECT COUNT(*) FROM orders WHERE order_status = 'PLACED') AS placed_orders,
+    (SELECT COUNT(*) FROM orders WHERE order_status = 'COMPLETED') AS completed_orders,
+    (SELECT COUNT(*) FROM orders WHERE order_status = 'CANCELLED') AS cancelled_orders,
+    (SELECT COALESCE(SUM(total_amount), 0) FROM orders WHERE order_status IN ('PLACED', 'COMPLETED')) AS gross_revenue;

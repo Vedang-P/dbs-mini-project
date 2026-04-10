@@ -2,6 +2,7 @@ import base64
 import hashlib
 import hmac
 import os
+import secrets
 
 ALGO = "pbkdf2_sha256"
 DEFAULT_ITERATIONS = 240000
@@ -38,3 +39,11 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
         iterations,
     )
     return hmac.compare_digest(provided_key, expected_key)
+
+
+def generate_session_token() -> str:
+    return secrets.token_urlsafe(32)
+
+
+def hash_session_token(token: str, secret: str) -> str:
+    return hashlib.sha256(f"{token}:{secret}".encode("utf-8")).hexdigest()

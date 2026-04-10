@@ -8,6 +8,11 @@ if [[ -z "${DATABASE_URL:-}" ]]; then
   exit 1
 fi
 
+SEED_DATA=false
+if [[ "${1:-}" == "--seed" ]]; then
+  SEED_DATA=true
+fi
+
 echo "Applying schema..."
 psql "$DATABASE_URL" -f database/schema.sql
 
@@ -17,7 +22,11 @@ psql "$DATABASE_URL" -f database/triggers.sql
 echo "Applying procedures..."
 psql "$DATABASE_URL" -f database/procedures.sql
 
-echo "Applying seed + queries..."
-psql "$DATABASE_URL" -f database/queries.sql
+if [[ "$SEED_DATA" == "true" ]]; then
+  echo "Applying seed + queries..."
+  psql "$DATABASE_URL" -f database/queries.sql
+else
+  echo "Skipping seed + queries. Pass --seed to include demo seed data."
+fi
 
 echo "Database initialization completed successfully."

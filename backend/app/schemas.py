@@ -14,14 +14,23 @@ class LoginRequest(BaseModel):
 
 
 class AddToCartRequest(BaseModel):
-    user_id: int
     product_id: int
     quantity: int = Field(gt=0)
 
 
 class PlaceOrderRequest(BaseModel):
-    user_id: int
+    user_id: int | None = None
 
 
 class CancelOrderRequest(BaseModel):
+    user_id: int | None = None
+
+
+class LegacyAddToCartRequest(BaseModel):
     user_id: int
+    product_id: int
+    quantity: int = Field(gt=0)
+
+
+class UpdateCartItemRequest(BaseModel):
+    quantity: int = Field(gt=0)

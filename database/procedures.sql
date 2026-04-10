@@ -156,6 +156,80 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION set_cart_item_quantity(
+    p_user_id BIGINT,
+    p_cart_item_id BIGINT,
+    p_quantity INTEGER
+)
+RETURNS TABLE (
+    cart_item_id BIGINT,
+    product_id BIGINT,
+    final_quantity INTEGER
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_product_id BIGINT;
+    v_stock_qty INTEGER;
+BEGIN
+    IF p_quantity IS NULL OR p_quantity <= 0 THEN
+        RAISE EXCEPTION 'Quantity must be greater than zero';
+    END IF;
+
+    SELECT
+        ci.product_id,
+        p.stock_qty
+    INTO v_product_id, v_stock_qty
+    FROM cart_items ci
+    JOIN carts c ON c.cart_id = ci.cart_id
+    JOIN products p ON p.product_id = ci.product_id
+    WHERE ci.cart_item_id = p_cart_item_id
+      AND c.user_id = p_user_id
+    FOR UPDATE;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Cart item % not found for user %', p_cart_item_id, p_user_id;
+    END IF;
+
+    IF p_quantity > v_stock_qty THEN
+        RAISE EXCEPTION 'Insufficient stock for product % (available %, requested %)',
+            v_product_id, v_stock_qty, p_quantity;
+    END IF;
+
+    UPDATE cart_items
+    SET quantity = p_quantity
+    WHERE cart_item_id = p_cart_item_id
+    RETURNING
+        cart_items.cart_item_id,
+        cart_items.product_id,
+        cart_items.quantity
+    INTO cart_item_id, product_id, final_quantity;
+
+    RETURN NEXT;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION remove_cart_item(
+    p_user_id BIGINT,
+    p_cart_item_id BIGINT
+)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_deleted BIGINT;
+BEGIN
+    DELETE FROM cart_items ci
+    USING carts c
+    WHERE ci.cart_id = c.cart_id
+      AND c.user_id = p_user_id
+      AND ci.cart_item_id = p_cart_item_id
+    RETURNING ci.cart_item_id INTO v_deleted;
+
+    RETURN v_deleted IS NOT NULL;
+END;
+$$;
+
 CREATE OR REPLACE FUNCTION update_inventory(
     p_product_id BIGINT,
     p_delta INTEGER,
