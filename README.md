@@ -253,3 +253,6 @@ Request:
 
 3. **Seed users cannot login**
 - Seeded users use placeholder hashes; create a user from UI for live login demo.
+
+4. **If login fails for an old account after updates**
+- Create a fresh account from `signup.html` and login with that new account.
