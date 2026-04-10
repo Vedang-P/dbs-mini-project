@@ -1,0 +1,1 @@
+-- Trigger scaffold. Full trigger logic and audit handling added in later checkpoint.

@@ -1,0 +1,1 @@
+-- Schema scaffold. Full 3NF schema and constraints added in later checkpoint.
